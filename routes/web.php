@@ -20,21 +20,63 @@
 
 
 //ログアウト中のページ
-Route::get('/login', 'Auth\LoginController@login');
+
+use App\Http\Controllers\FollowsController;
+use App\Http\Controllers\UsersController;
+
+Route::get('/login', 'Auth\LoginController@login')->name("login");
 Route::post('/login', 'Auth\LoginController@login');
 
-Route::get('/register', 'Auth\RegisterController@register');
+// Route::get('/register', 'Auth\RegisterController@register');
+// 変更
+Route::get('/register', 'Auth\RegisterController@registerView');
 Route::post('/register', 'Auth\RegisterController@register');
 
 Route::get('/added', 'Auth\RegisterController@added');
 Route::post('/added', 'Auth\RegisterController@added');
 
-//ログイン中のページ
-Route::get('/top','PostsController@index');
+// ログアウト
+Route::get('/logout', 'Auth\LoginController@logout');
 
-Route::get('/profile','UsersController@profile');
 
-Route::get('/search','UsersController@index');
 
-Route::get('/follow-list','PostsController@index');
-Route::get('/follower-list','PostsController@index');
+
+// ミドルウェア（ログイン者のみ閲覧権限）
+Route::group(['middleware' => 'auth'], function () {
+
+  //ログイン中のページ
+  Route::get('/top', 'PostsController@index');
+  Route::post('/top', 'PostsController@show');
+
+  Route::get('/profile', 'UsersController@profile');
+
+  Route::get('/search', 'UsersController@index');
+
+  // タイムライン
+  Route::post('/timeline', 'PostsController@postCreate')->name('post');
+
+  // 編集
+  Route::post('/posts/update', 'PostsController@update')->name('posts.update');
+
+  // 削除
+  Route::get('/posts/{id}/destroy', 'PostsController@destroy');
+
+
+  // // フォローリスト
+  Route::get('/followList', 'FollowsController@index')->name('users.index');
+  Route::post('/followList', 'FollowsController@follow')->name('users.follow');
+  Route::get('/followList', 'FollowsController@followUsers')->name('users.followUsers');
+
+  // // フォロワーリスト
+  Route::get('/followerList', 'FollowsController@index')->name('users.index');
+  Route::post('/followerList', 'FollowsController@follow')->name('users.follow');
+  Route::get('/followerList', 'FollowsController@followersUsers')->name('users.followersUsers');
+
+  // フォローボタン
+  Route::post('/unfollow', 'FollowsController@unfollow')->name('users.unfollow'); //フォロー解除 見えないページ
+  Route::post('/follow', 'FollowsController@follow')->name('users.follow'); //フォロー 見えないページ
+
+  // ユーザー検索
+  Route::post('/users/search', 'UsersController@search')->name('users.search');
+  Route::get('/users/search', 'UsersController@searchView')->name('users.searchView');
+});
