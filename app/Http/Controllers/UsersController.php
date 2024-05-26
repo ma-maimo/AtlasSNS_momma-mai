@@ -9,39 +9,16 @@ use App\User;
 use App\Post;
 use App\Follow;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class UsersController extends Controller
 {
-    //追加🌼
-
-    // 🌼
     public function index()
     {
         $users = User::where('id', '!=', Auth::user()->id)->get();
         return view('users.search', compact('users'));
     }
-
-    // public function follow(Request $request)
-    // {
-    //     $following_id = $request->following_id;
-    //     $followed_id = $request->followed_id;
-
-    //     //ログインユーザーが対象のユーザーをフォローしているか？
-    //     $isFollow = (bool) Follow::where('id', Auth::user()->id)->where('following_id', $following_id)->first();
-
-    //     if ($isFollow) {
-    //         $nofollow = Follow::where('id', Auth::user()->id)->where('following_id', $following_id);
-    //         $nofollow->delete();
-    //     } else {
-    //         $follow = new follow();
-    //         $follow->id = Auth::user()->id;
-    //         $follow->following_id = $following_id;
-    //         $follow->followed_id = $followed_id;
-    //         $follow->save();
-    //     }
-    //     return back();
-    // }
 
     public function profile()
     {
@@ -81,25 +58,74 @@ class UsersController extends Controller
         return view('users.search')->with('keyword', $keyword)->with('users', $users)->with('query', $query);
     }
 
-    // 検索ワード
-    // public function searchWord(Request $request)
-    // {
-    //     $keyword = $request->input('keyword');
-    //     $query = User::query();
 
-    //     if (!empty($keyword)) {
-    //         $query->orwhere('username', 'like', '%')->get();
-    //     }
+    // プロフィール編集機能
+    public function edit()
+    {
+        $user = Auth::user();
+        // dd($user);
+        return view('users.profile', compact('user'));
+    }
 
-    //     // 全件取得
-    //     $data = $query->orderBy('created_at', 'desc')->paginate(5);
-    //     return view('users.search')->with('data', $data)->with('keyword', $keyword);
-    // }
+    public function update(Request $request)
+    {
+        // dd('aaaaa');
+        $user = Auth::user();
+        // dd($user);
+        $request->validate([
+            'username' => 'required|between:2,12',
+            'mail' => 'required|email|unique:users,mail|between:5,40',
+            'password' => 'required|regex:/^[a-zA-Z0-9]+$/|between:8,20|confirmed:password',
+            'bio' => 'nullable|max:150',
+            'images' => 'nullable|mimes:jpg,png,bmp,gif,svg',
+        ]);
 
-    // ユーザー表示
-    // public function allUsers()
-    // {
-    //     $allUsers = auth()->user()->allUsers()->get();
-    //     return view('users.allUsers', ['allUsers' => $allUsers]);
-    // }
+
+        // パスワードの入力がある場合のみ更新
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+
+        // プロフィール画像のアップロード処理
+        if ($request->hasFile('images')) {
+            // 古い画像が存在する場合は削除
+            if ($user->images) {
+                Storage::delete('public/images/' . $user->images);
+            }
+
+            // 新しい画像を保存
+            $image = $request->file('images');
+            $imageName = time() . '.' . $image->getClientOriginalExtension(); //時間＋ファイル名で重複防ぐ
+            $image->storeAs('public/images', $imageName);
+            $user->images = $imageName;
+        }
+
+        // ユーザー情報の更新
+        $user->username = $request->input('username');
+        $user->mail = $request->input('mail');
+        // $user->password = $request->input('password');
+        $user->bio = $request->input('bio');
+        // $user->images = $request->file('images');
+        $user->save();
+
+        return redirect()->route('/top', $user->id)->with('success', 'プロフィールが更新されました。');
+    }
 }
+
+    // public function update(Request $request)
+    // {
+    //     // 1つ目の処理
+    //     $id = $request->input('id');
+    //     $username = $request->input('username');
+    //     $mail = $request->input('mail');
+    //     $password = $request->input('password');
+    //     $bio = $request->input('bio');
+    //     $images = $request->input('images');
+    //     // 2つ目の処理
+    //     Book::where('id', $id)->update([
+    //           'title' => $up_title,
+    //           'price' => $up_price
+    //     ]);
+    //     // 3つ目の処理
+    //     return redirect('/index');
+    // }

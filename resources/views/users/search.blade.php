@@ -80,8 +80,8 @@
           </form>
           @endif
         </div>
-        @endif
       </div>
+      @endif
     </div>
     @endforeach
     <!-- <div class="my-4 d-flex">

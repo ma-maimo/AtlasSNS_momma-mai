@@ -79,4 +79,8 @@ Route::group(['middleware' => 'auth'], function () {
   // ユーザー検索
   Route::post('/users/search', 'UsersController@search')->name('users.search');
   Route::get('/users/search', 'UsersController@searchView')->name('users.searchView');
+
+  // プロフィール編集
+  Route::get('/profile', 'UsersController@edit')->name('users.edit');
+  Route::post('/profile', 'UsersController@update')->name('users.update');
 });
