@@ -39,26 +39,29 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+
+    // 新規登録ページの表示
     public function registerView(request $request)
     {
         return view('auth.register');
-        $validated = $request->validate();
     }
 
+    // 新規登録の処理
     public function register(request $request)
     {
-        if ($request->isMethod('post')) {
-            $data = $request->all();
+        if ($request->isMethod('post')) { //post送信の確認
             $validated = $request->validate([ //バリデーション
                 'username' => 'required|between:2,12',
                 'mail' => 'required|email|unique:users,mail|between:5,40',
                 'password' => 'required|regex:/^[a-zA-Z0-9]+$/|between:8,20|confirmed:password',
             ]);
 
+            // フォームデータの取得
             $username = $request->input('username');
             $mail = $request->input('mail');
             $password = $request->input('password');
 
+            // Userモデルを使ってユーザーの作成
             User::create([
                 'username' => $username,
                 'mail' => $mail,
@@ -71,7 +74,7 @@ class RegisterController extends Controller
         }
     }
 
-
+    // ユーザー登録完了ページの表示
     public function added()
     {
         return view('auth.added');

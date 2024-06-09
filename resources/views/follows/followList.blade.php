@@ -2,63 +2,42 @@
 
 @section('content')
 
-
-<!-- <div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      @foreach ($followUsers as $user)
-      <div class="card">
-        <div class="card-haeder p-3 w-100 d-flex">
-          <img src="{{ asset('images/'.$user->images) }}" class="rounded-circle" width="50" height="50">
-          <div class="ml-2 d-flex flex-column">
-            <p class="mb-0"></p>
-            <a href="" class="text-secondary"></a>
-          </div>
-        </div>
-      </div>
-      @endforeach
-    </div>
-  </div>
-  <div class="my-4 d-flex justify-content-center">
-
-  </div>
-</div> -->
-
 <!-- アイコンリスト -->
 <div class="container">
-  <h1>フォローリスト</h1>
+  <h1 class="heading">フォローリスト</h1>
   <div class="row ">
     <div class="follow_list">
-      @foreach ($followUsers as $user)
-      <!-- <div class="d-flex flex-row"> -->
-      <img src="{{ asset('images/'.$user->images) }}" class="rounded-circle" width="50" height="50">
-      <!-- </div> -->
-      @endforeach
+      <div class="follow_list_icon">
+        @foreach ($followUsers as $user)
+        <a href="{{ url('/users/otherProfile',$user->id) }}">
+          <img src="{{ asset('storage/images/'.$user->images) }}" class="rounded-circle" width="50" height="50">
+        </a>
+        @endforeach
+      </div>
     </div>
-  </div>
-  <div class="my-4 d-flex">
   </div>
 </div>
 
 
-<div class="container">
-  <div class="row ">
-    <div class="col-md-8">
-      @foreach ($followUsers as $user)
-      <div class="follow_list_tubuyaki">
-        <div class="p-3 w-100 d-flex">
-          <img src="{{ asset('images/'.$user->images) }}" class="rounded-circle" width="50" height="50">
-          <!-- <div class="ml-2 d-flex flex-column"> -->
-          <p class="mb-0">{{ $user->username }}</p>
-          <!-- ここに各ユーザーのつぶやきポスト入れる -->
-          <a href="{{ url('users/' .$user->id) }}" class="text-secondary">{{ $user->posts }}</a>
+<!-- タイムライン -->
+<div class="container_timeline">
+  <ul class="timeline">
+    @foreach ($posts as $post)
+    <li class="post_block">
+      <a href="{{ url('/users/otherProfile',$post->user->id) }}" class="icon_tweet_timeline">
+        <img src="{{ asset('storage/images/'.$post->user->images) }}" class="rounded-circle" width="50" height="50">
+      </a>
 
-          <!-- </div> -->
+      <div class="post_content">
+        <div class="post_list">
+          <div class="post_name">{{ $post->user->username }}</div>
+          <div class="post_created_at">{{ $post->created_at }}</div>
         </div>
+        <div class="post_timeline">{{ $post->post }}</div>
       </div>
-      @endforeach
-    </div>
-  </div>
+    </li>
+    @endforeach
+  </ul>
   <div class="my-4 d-flex">
   </div>
 </div>

@@ -13,7 +13,7 @@
 </div>
 @endif
 
-<!-- 適切なURLを入力してください -->
+<!-- 新規登録フォーム -->
 {!! Form::open(['url' => '/register']) !!}
 <div class="register_wrapper">
 

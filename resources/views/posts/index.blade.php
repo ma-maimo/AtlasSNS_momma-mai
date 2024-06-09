@@ -1,28 +1,22 @@
 @extends('layouts.login')
 
 @section('content')
-<!-- <h2>機能を実装していきましょう。</h2> -->
 
 <!-- つぶやきフォーム -->
-
 <div class="container mt-3 post_form">
 
   {!! Form::open(['url' => '/timeline', 'method' => 'POST', 'class' => 'row']) !!}
   {{ csrf_field() }}
-  <!-- {{ form::token() }} -->
-  <img class="icon_tweet col-2" src="{{ asset('images/'.Auth::user()->images) }}">
+  <img class="icon_tweet_login col-2 rounded-circle" width="50" height="50" src=" {{ asset('storage/images/'.Auth::user()->images) }}">
   <div class="col-sm">
     <div class="form_group">
       {{ Form::text('post', null, ['required','class' => 'form-control rows="3" ', 'placeholder' => '投稿内容を入力してください。']) }}
-      <!-- {{ Form::text('newPost', null, ['required','class' => 'form-control', 'placeholder' => '投稿内容を入力してください。']) }} -->
     </div>
   </div>
 
   <div class="post_form_btn">
     {{ Form::button('<img src="images/post.png">', ['class' => 'btn btn-block','type' => 'submit']) }}
-    <!-- {{ Form::submit('', ['class' => 'btn btn-primary col-2']) }} -->
   </div>
-
 
   {{-- エラー表示 ここから --}}
   @if ($errors->has('post'))
@@ -34,35 +28,32 @@
 
 
 <!-- タイムライン -->
-@foreach($user_posts as $post)
-<ul>
-
-  <li class="post-block">
-    <figure><img class="icon_tweet" src="{{ asset('images/'.Auth::user()->images) }}"></figure>
-    <div class="post-content">
-
+<ul class="timeline">
+  @foreach($posts as $post)
+  <li class="post_block">
+    <a href="{{ url('/users/otherProfile',$post->user->id) }}" class="icon_tweet_timeline">
+      <figure><img class="icon_tweet_timeline rounded-circle" width="50" height="50" src=" {{ asset('storage/images/'.$post->user->images) }}"></figure>
+    </a>
+    <div class="post_content">
       <div class="post_list">
-        <div class="post-name">{{ Auth::user()->username }}</div>
-        <div>{{ $post->created_at }}</div>
+        <div class="post_name">{{ $post->user->username }}</div>
+        <div class="post_created_at">{{ $post->created_at }}</div>
       </div>
-      <div>{{ $post->post }}</div>
+      <div class="post_timeline">{{ $post->post }}</div>
 
-
-      <!-- <div class="content"> -->
+      @if(Auth::user() == $post->user )
       <!-- 編集ボタン -->
       <a class="btn edit-modal-open edit_btn" data-toggle="modal" data-target="#modal-example" post_id="{{$post->id}}" post="{{$post->post}}" method="post">
-        <img src="images/edit.png" alt="">
+        <img src="images/edit.png" alt="編集ボタン">
       </a>
       <!-- 削除ボタン -->
       <div class="delete_btn">
         <a href="/posts/{{ $post->id }}/destroy" onclick="return confirm('この投稿を削除します。よろしいでしょうか？')">
-          <img src="images/trash.png" alt="">
+          <img src="images/trash.png" alt="削除ボタン" class="trash1">
+          <img src="images/trash-h.png" alt="ホバー時の削除ボタン" class="trash2">
         </a>
       </div>
-
-
-
-      <!-- </div> -->
+      @endif
 
       <!-- モーダルの中身 編集-->
       <div class="modal edit-modal">
@@ -70,18 +61,18 @@
         <div class="modal__content">
 
           <form action="{{ route('posts.update')}}" method="post">
-            <textarea name="post" class="edit_post">{{ $post->post }}</textarea>
+            <textarea name="post" class="edit_post d-flex">{{ $post->post }}</textarea>
             <input type="hidden" name="post_id" class="edit_id" value="{{ $post->id }}">
-            <input type="submit" value="更新">
+            <!-- <input type="submit" value="更新" class="edit_btn_modal"> -->
+            <!-- <img src="images/edit.png" alt="編集ボタン"> -->
+            <button type="submit" class="submit_button">
+              <img src="images/edit.png" alt="更新" class="edit_btn_modal">
+            </button>
             {{ csrf_field() }}
           </form>
-          <a class="edit-modal-close" href="/top">閉じる</a>
+          <!-- <a class="edit-modal-close" href="/top">閉じる</a> -->
         </div>
       </div>
-
-
-
-
     </div>
   </li>
 </ul>
