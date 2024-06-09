@@ -6,11 +6,10 @@
   <!--IEブラウザ対策-->
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="description" content="ページの内容を表す文章" />
-  <title></title>
+  <title>Atlas</title>
   <!-- Bootstrap -->
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
+  <!-- stylesheet -->
   <link rel="stylesheet" href="{{ asset('css/reset.css') }} ">
   <link rel="stylesheet" href="{{ asset('css/style.css') }} ">
   <!--スマホ,タブレット対応-->
@@ -27,15 +26,13 @@
 
 <body>
   <header>
-    <!-- <div id=""> -->
-
-    <h1><a href="/top"><img class="header_logo" src="{{ asset('images/atlas.png') }}"></a></h1>
-
-    <!-- <div id=""> -->
+    <div id="header_logo">
+      <h1><a href="/top"><img class="header_logo" src="{{ asset('images/atlas.png') }}"></a></h1>
+    </div>
 
     <div id="drop_menu">
       <p class="user_name">{{ Auth::user()->username }}　さん</p>
-      <img class="icon" src="{{ asset('images/'.Auth::user()->images) }}">
+      <img class="icon" src="{{ asset('storage/images/'.Auth::user()->images) }}">
       <!-- アコーディオンメニュー -->
       <button type="button" class="menu-btn">
         <span class="inn"></span>
@@ -49,41 +46,40 @@
         </ul>
       </nav>
     </div>
-
-
-
-
-
-    </div>
   </header>
+
+
   <div id="row">
     <div id="container">
       @yield('content')
     </div>
-    <div id="side-bar">
+    <div id="sidebar">
       <div id="confirm">
-        <p>{{ Auth::user()->username }}さんの</p>
+        <p class="sidebar_username">{{ Auth::user()->username }}さんの</p>
         <div>
-          <p>フォロー数</p>
-          <p>{{ Auth::user()->follows()->count() }}名</p>
+          <p class="follow_count">フォロー数</p>
+          <p class="count_number">{{ Auth::user()->follows()->count() }}人</p>
         </div>
-        <p class="btn"><a href="/followList">フォローリスト</a></p>
+        <!-- <a href="/followList" class="sidebar_btn">フォローリスト</a> -->
+        <a href="/followList"><button type="button" class="btn btn-primary">フォローリスト</button></a>
         <div>
-          <p>フォロワー数</p>
-          <p>{{ Auth::user()->followers()->count() }}名</p>
+          <p class="follower_count">フォロワー数</p>
+          <p class="count_number">{{ Auth::user()->followers()->count() }}人</p>
         </div>
-        <p class="btn"><a href="/followerList">フォロワーリスト</a></p>
+        <!-- <a href="/followerList" class="sidebar_btn">フォロワーリスト</a> -->
+        <a href="/followerList"><button type="button" class="btn btn-primary">フォロワーリスト</button></a>
       </div>
-      <p class="btn"><a href="/search">ユーザー検索</a></p>
+      <!-- <a href="/search" class="sidebar_btn_search">ユーザー検索</a> -->
+      <a href="/search"><button type="button" class="btn btn-primary btn-primary-search">ユーザー検索</button></a>
     </div>
   </div>
-  <footer>
-  </footer>
 
-  <!-- BootsStrap -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  <script src="{{ asset('js/app.js') }}"></script>
-  <script src="{{ asset('js/script.js') }}"></script>
+  <footer>
+    <!-- BootsStrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+  </footer>
 
 </body>
 
