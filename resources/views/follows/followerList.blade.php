@@ -10,7 +10,11 @@
       <div class="follow_list_icon">
         @foreach ($followerUsers as $user)
         <a href="{{ url('/users/otherProfile',$user->id) }}">
+          @if($user->images == 'icon1.png')
+          <img src="{{ asset('images/icon1.png') }}" alt="初期アイコン" class="rounded-circle" width="50" height="50">
+          @else
           <img src="{{ asset('storage/images/'.$user->images) }}" class="rounded-circle" width="50" height="50">
+          @endif
         </a>
         @endforeach
       </div>
@@ -24,7 +28,11 @@
     @foreach ($posts as $post)
     <li class="post_block">
       <a href="{{ url('/users/otherProfile',$post->user->id) }}">
+        @if($post->user->images == 'icon1.png')
+        <img src="{{ asset('images/icon1.png') }}" alt="初期アイコン" class="rounded-circle" width="50" height="50">
+        @else
         <img src="{{ asset('storage/images/'.$post->user->images) }}" class="rounded-circle" width="50" height="50">
+        @endif
       </a>
 
       <div class="post_content">

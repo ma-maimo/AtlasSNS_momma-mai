@@ -32,7 +32,11 @@
 
     <div id="drop_menu">
       <p class="user_name">{{ Auth::user()->username }}　さん</p>
+      @if(Auth::user()->images == 'icon1.png')
+      <img src="{{ asset('images/icon1.png') }}" alt="初期アイコン" class="icon">
+      @else
       <img class="icon" src="{{ asset('storage/images/'.Auth::user()->images) }}">
+      @endif
       <!-- アコーディオンメニュー -->
       <button type="button" class="menu-btn">
         <span class="inn"></span>
@@ -60,16 +64,13 @@
           <p class="follow_count">フォロー数</p>
           <p class="count_number">{{ Auth::user()->follows()->count() }}人</p>
         </div>
-        <!-- <a href="/followList" class="sidebar_btn">フォローリスト</a> -->
         <a href="/followList"><button type="button" class="btn btn-primary">フォローリスト</button></a>
         <div>
           <p class="follower_count">フォロワー数</p>
           <p class="count_number">{{ Auth::user()->followers()->count() }}人</p>
         </div>
-        <!-- <a href="/followerList" class="sidebar_btn">フォロワーリスト</a> -->
         <a href="/followerList"><button type="button" class="btn btn-primary">フォロワーリスト</button></a>
       </div>
-      <!-- <a href="/search" class="sidebar_btn_search">ユーザー検索</a> -->
       <a href="/search"><button type="button" class="btn btn-primary btn-primary-search">ユーザー検索</button></a>
     </div>
   </div>

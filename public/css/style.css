@@ -61,24 +61,6 @@ header{
     font-size: 0.9rem;
     margin: 30px 0;
 }
-/* ボタン */
-/* .sidebar_btn {
-    background: #186AC9;
-    border-radius: 10px;
-    margin: 10px;
-    color: #fff;
-    font-size: 14px;
-    padding: 12px 20px;
-    margin-left: 100px;
-}
-.sidebar_btn_search{
-    background: #186AC9;
-    border-radius: 10px;
-    margin: 10px;
-    color: #fff;
-    font-size: 15px;
-    padding: 10px;
-} */
 
 .count_number {
     float: right;
@@ -486,6 +468,7 @@ li {
 
 .form-group {
     padding-bottom: 40px;
+    position: static;
 }
 
 .form-group label {
@@ -515,9 +498,17 @@ li {
 
 .update_btn {
     width: 180px;
+    margin-bottom: 40px;
     position: relative;
     top: 0;
     left: 170px;
+}
+
+.text-danger {
+    width: 500px;
+    position: relative;
+    top: -20px;
+    left: -400px;
 }
 
 

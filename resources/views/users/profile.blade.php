@@ -6,7 +6,11 @@
   <div class="profile_edit d-flex col-8">
 
     <div class="profile_icon">
+      @if(Auth::user()->images == 'icon1.png')
+      <img src="{{ asset('images/icon1.png') }}" alt="初期アイコン" class="icon_profile">
+      @else
       <img class="icon_profile" src="{{ asset('storage/images/'.Auth::user()->images) }}">
+      @endif
     </div>
 
     @if(session('success'))

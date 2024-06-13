@@ -7,7 +7,11 @@
 
   {!! Form::open(['url' => '/timeline', 'method' => 'POST', 'class' => 'row']) !!}
   {{ csrf_field() }}
+  @if(Auth::user()->images == 'icon1.png')
+  <img src="images/icon1.png" alt="初期アイコン" class="icon_tweet_login col-2 rounded-circle" width="50" height="50">
+  @else
   <img class="icon_tweet_login col-2 rounded-circle" width="50" height="50" src=" {{ asset('storage/images/'.Auth::user()->images) }}">
+  @endif
   <div class="col-sm">
     <div class="form_group">
       {{ Form::text('post', null, ['required','class' => 'form-control rows="3" ', 'placeholder' => '投稿内容を入力してください。']) }}
@@ -32,7 +36,11 @@
   @foreach($posts as $post)
   <li class="post_block">
     <a href="{{ url('/users/otherProfile',$post->user->id) }}" class="icon_tweet_timeline">
+      @if($post->user->images == 'icon1.png')
+      <img src="{{ asset('images/icon1.png') }}" alt="初期アイコン" class="icon_tweet_login rounded-circle" width="50" height="50">
+      @else
       <figure><img class="icon_tweet_timeline rounded-circle" width="50" height="50" src=" {{ asset('storage/images/'.$post->user->images) }}"></figure>
+      @endif
     </a>
     <div class="post_content">
       <div class="post_list">
@@ -63,14 +71,11 @@
           <form action="{{ route('posts.update')}}" method="post">
             <textarea name="post" class="edit_post d-flex">{{ $post->post }}</textarea>
             <input type="hidden" name="post_id" class="edit_id" value="{{ $post->id }}">
-            <!-- <input type="submit" value="更新" class="edit_btn_modal"> -->
-            <!-- <img src="images/edit.png" alt="編集ボタン"> -->
             <button type="submit" class="submit_button">
               <img src="images/edit.png" alt="更新" class="edit_btn_modal">
             </button>
             {{ csrf_field() }}
           </form>
-          <!-- <a class="edit-modal-close" href="/top">閉じる</a> -->
         </div>
       </div>
     </div>

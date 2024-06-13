@@ -3,7 +3,11 @@
 @section('content')
 <!-- 他ユーザーのプロフィール -->
 <div class="container mt-3 other_profile">
+  @if($user->images == 'icon1.png')
+  <img src="{{ asset('images/icon1.png') }}" alt="初期アイコン" class="icon_other_profile col-2">
+  @else
   <img class="icon_other_profile col-2" src="{{ asset('storage/images/'.$user->images) }}">
+  @endif
   <div class="other_profile_content d-flex col-10">
     <div class="profile_title">
       <p>ユーザー名</p>
@@ -49,7 +53,11 @@
 <ul>
   <li class="post_block">
     <a href="{{ url('/users/otherProfile',$user->id) }}">
+      @if($user->images == 'icon1.png')
+      <img src="{{ asset('images/icon1.png') }}" alt="初期アイコン" class="icon_other_profile">
+      @else
       <figure><img class="icon_other_profile" src="{{ asset('storage/images/'.$user->images) }}"></figure>
+      @endif
     </a>
     <div class="post_content">
       <div class="post_list">

@@ -24,7 +24,11 @@
     @if(isset($user)and!(Auth::user()==$user))
     <div class="user_list d-flex">
       <a href="{{ url('/users/otherProfile',$user->id) }}">
+        @if($user->images == 'icon1.png')
+        <img src="{{ asset('images/icon1.png') }}" alt="初期アイコン" class="rounded-circle " width="50" height="50">
+        @else
         <img src="{{ asset('storage/images/'.$user->images) }}" class="rounded-circle " width="50" height="50">
+        @endif
       </a>
       <div class="w-100 d-flex user_list_content">
         <p class="mb-0 user_list_name">{{ $user->username }}</p>
