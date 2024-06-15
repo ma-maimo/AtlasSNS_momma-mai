@@ -8,7 +8,7 @@
   {!! Form::open(['url' => '/timeline', 'method' => 'POST', 'class' => 'row']) !!}
   {{ csrf_field() }}
   @if(Auth::user()->images == 'icon1.png')
-  <img src="images/icon1.png" alt="初期アイコン" class="icon_tweet_login col-2 rounded-circle" width="50" height="50">
+  <img src="{{ asset('images/icon1.png') }}" alt="初期アイコン" class="icon_tweet_login col-2 rounded-circle" width="50" height="50">
   @else
   <img class="icon_tweet_login col-2 rounded-circle" width="50" height="50" src=" {{ asset('storage/images/'.Auth::user()->images) }}">
   @endif
@@ -24,7 +24,7 @@
 
   {{-- エラー表示 ここから --}}
   @if ($errors->has('post'))
-  <p class="alert alert-danger">{{ $errors->first('post') }}</p>
+  <span class="text-danger">{{ $errors->first('post') }}</span>
   @endif
   {{-- エラー表示 ここまで --}}
   {!! Form::close() !!}

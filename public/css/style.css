@@ -511,6 +511,11 @@ li {
     left: -400px;
 }
 
+.post_form .text-danger {
+    position: relative;
+    top: 0;
+    left: 50px;
+}
 
 
 /* 他のユーザーのプロフィール */
